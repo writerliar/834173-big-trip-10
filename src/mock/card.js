@@ -62,7 +62,7 @@ const ExtraTypes = [
   `Choose seats`,
 ];
 
-const ExtraPrices  = [
+const ExtraPrices = [
   `10`,
   `9`,
   `150`,
@@ -100,7 +100,7 @@ const generateTravelCard = () => {
     price: getRandomElement(Prices),
     extraType: getRandomElement(ExtraTypes),
     extraPrice: getRandomElement(ExtraPrices)
-  }
+  };
 };
 
 const generateTravelCards = (count) => {

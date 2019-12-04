@@ -1,4 +1,4 @@
-import {generateTravelCard} from '../mock/card.js'
+import {generateTravelCard} from '../mock/card.js';
 
 export const createEditTemplate = () => {
   return (
