@@ -1,3 +1,10 @@
+import {getRandomElement, getRandomNumber, getRandomDate, getRandomBoolean} from '../utils/utils';
+
+const MAX_PRICE = 2000;
+const MAX_PICTURE = 5;
+const MAX_EXTRA = 2;
+const TRIP_COUNT = 3;
+
 const Types = [
   `bus`,
   `check-in`,
@@ -34,49 +41,39 @@ const travelDescription = [
   `In rutrum ac purus sit amet tempus.`
 ];
 
-const Dates = [
-  `18/03/19`,
-  `18/04/19`,
-  `18/05/19`,
-  `18/06/19`
+const extraOffers = [
+  {
+    type: `luggage`,
+    title: `Add luggage`,
+    price: 10,
+    isChecked: getRandomBoolean()
+  },
+  {
+    type: `comfort`,
+    title: `Switch to comfort`,
+    price: 9,
+    isChecked: getRandomBoolean()
+  },
+  {
+    type: `meal`,
+    title: `Add meal`,
+    price: 150,
+    isChecked: getRandomBoolean()
+  },
+  {
+    type: `seats`,
+    title: `Choose seats`,
+    price: 2,
+    isChecked: getRandomBoolean()
+  }
 ];
 
-const Times = [
-  `00:00`,
-  `10:00`,
-  `12:00`,
-  `15:00`
-];
+const getRandomPhoto = () => `http://picsum.photos/300/150?r=${Math.random()}`;
 
-const Prices = [
-  `100`,
-  `1000`,
-  `1200`,
-  `1500`
-];
-
-const ExtraTypes = [
-  `Add luggage`,
-  `Switch to comfort`,
-  `Add meal`,
-  `Choose seats`,
-];
-
-const ExtraPrices = [
-  `10`,
-  `9`,
-  `150`,
-  `2`
-];
-
-const gerRandomPhoto = () => `http://picsum.photos/300/150?r=${Math.random()}`;
-
-const getRandomElement = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
-};
-
-const getRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min;
+const fillPhotos = (count) => {
+  return new Array(count)
+    .fill(``)
+    .map(getRandomPhoto);
 };
 
 const randomDescription = () => {
@@ -90,16 +87,20 @@ const randomDescription = () => {
 };
 
 const generateTravelCard = () => {
+  let firstValue = getRandomDate();
+  let secondValue = getRandomDate();
+
   return {
     type: getRandomElement(Types),
     city: getRandomElement(Cities),
-    img: gerRandomPhoto(),
+    img: fillPhotos(MAX_PICTURE),
     description: randomDescription(),
-    date: getRandomElement(Dates),
-    time: getRandomElement(Times),
-    price: getRandomElement(Prices),
-    extraType: getRandomElement(ExtraTypes),
-    extraPrice: getRandomElement(ExtraPrices)
+    startDate: Math.min(firstValue, secondValue),
+    endDate: Math.max(firstValue, secondValue),
+    startTime: Math.min(firstValue, secondValue),
+    endTime: Math.max(firstValue, secondValue),
+    price: getRandomNumber(0, MAX_PRICE),
+    extra: extraOffers
   };
 };
 
@@ -109,4 +110,19 @@ const generateTravelCards = (count) => {
     .map(generateTravelCard);
 };
 
-export {generateTravelCard, generateTravelCards};
+const tripCard = generateTravelCard();
+
+const tripCards = generateTravelCards(TRIP_COUNT);
+
+const getTotalPrice = () => {
+  let totalPrice = 0;
+  for (let i = 0; i < tripCards.length; i++) {
+    let card = tripCards[i];
+
+    totalPrice = totalPrice + card.price;
+  }
+
+  return totalPrice;
+};
+
+export {generateTravelCard, generateTravelCards, fillPhotos, tripCard, tripCards, extraOffers, MAX_EXTRA, getTotalPrice, getRandomNumber};

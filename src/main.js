@@ -4,10 +4,8 @@ import {createSortTemplate} from './components/sort.js'
 import {createCardTemplate} from './components/card-travel.js'
 import {createEditTemplate} from './components/edit-travel.js'
 import {createInformationTemplate} from './components/information.js'
-import {generateTravelCards} from './mock/card.js'
-
-
-const TRIP_COUNT = 3;
+import {createExtraTemplate} from './components/extra-item.js'
+import {tripCards, extraOffers, MAX_EXTRA, getRandomNumber, getTotalPrice} from './mock/card.js'
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -33,10 +31,21 @@ const tripSort = tripEvents.querySelector(`.trip-events__trip-sort`);
 
 render(tripSort, createEditTemplate(), `afterend`);
 
-const tripList = tripEvents.querySelector(`.trip-events__list`);
+const tripList = tripEvents.querySelector(`.trip-days`);
 
-const tripCards = generateTravelCards(TRIP_COUNT);
-
-tripCards.slice().forEach((card) => {
-  render(tripList, createCardTemplate(card), `afterbegin`)
+tripCards.slice().sort(
+  function(a, b){
+    return a.startDate-b.startDate
+  }
+).forEach((card, index) => {
+  render(tripList, createCardTemplate(card, index), `beforeend`)
 });
+
+const extraList = document.querySelector('.event__available-offers');
+
+extraOffers.slice(0, getRandomNumber(0, MAX_EXTRA)).forEach((extraOffer) => {
+  render(extraList, createExtraTemplate(extraOffer), `beforeend`);
+});
+
+const totalPriceContainer = document.querySelector(`.trip-info__cost-value`);
+totalPriceContainer.textContent = getTotalPrice().toString();
