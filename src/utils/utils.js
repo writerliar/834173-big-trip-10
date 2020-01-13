@@ -1,4 +1,4 @@
-import {MONTH_SHORT_NAMES} from '../const.js';
+import {MONTH_SHORT_NAMES} from '../consts';
 
 const DAYS_IN_WEEK = 7;
 const HOURS_IN_DAY = 24;

@@ -1,4 +1,4 @@
-import {tripCard} from '../mock/card.js';
+import {tripCard} from '../mock/card';
 import {formatDate} from "../utils/utils";
 
 export const createEditTemplate = () => {

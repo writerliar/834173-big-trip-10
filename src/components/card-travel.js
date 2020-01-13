@@ -1,4 +1,4 @@
-import {formatTime, formatTextDate} from '../utils/utils.js';
+import {formatTime, formatTextDate} from '../utils/utils';
 
 const createCardTemplate = (card, index) => {
   return (

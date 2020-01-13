@@ -1,11 +1,11 @@
-import {createMenuTemplate} from './components/menu.js'
-import {createFilterTemplate} from './components/filter.js'
-import {createSortTemplate} from './components/sort.js'
-import {createCardTemplate} from './components/card-travel.js'
-import {createEditTemplate} from './components/edit-travel.js'
-import {createInformationTemplate} from './components/information.js'
-import {createExtraTemplate} from './components/extra-item.js'
-import {tripCards, extraOffers, MAX_EXTRA, getRandomNumber, getTotalPrice} from './mock/card.js'
+import {createMenuTemplate} from './components/menu'
+import {createFilterTemplate} from './components/filter'
+import {createSortTemplate} from './components/sort'
+import {createCardTemplate} from './components/card-travel'
+import {createEditTemplate} from './components/edit-travel'
+import {createInformationTemplate} from './components/information'
+import {createExtraTemplate} from './components/extra-item'
+import {tripCards, extraOffers, MAX_EXTRA, getRandomNumber, getTotalPrice} from './mock/card'
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
