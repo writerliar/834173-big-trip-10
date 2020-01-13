@@ -1,8 +1,10 @@
+import {createElement} from "../utils/utils";
+
 const testChecked = (value) => {
   return value ? `checked` : ``;
 };
 
-export const createExtraTemplate = (extraOffer) => {
+const createExtraTemplate = (extraOffer) => {
   return (
     ` <div class="event__offer-selector">
                     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${testChecked(extraOffer.isChecked)}>
@@ -13,4 +15,28 @@ export const createExtraTemplate = (extraOffer) => {
                     </label>
                   </div>`
   );
+};
+
+export default class Extra {
+  constructor(extraOffer) {
+    this._extraOffer = extraOffer;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createExtraTemplate(this._extraOffer);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 };

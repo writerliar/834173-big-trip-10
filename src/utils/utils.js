@@ -5,6 +5,11 @@ const HOURS_IN_DAY = 24;
 const SEC_IN_MIN = 3600;
 const MS_IN_SEC = 1000;
 
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  AFTEREND: `afterend`,
+  BEFOREEND: `beforeend`
+};
 
 const getRandomElement = (array) => {
   return array[Math.floor(Math.random() * array.length)];
@@ -50,4 +55,22 @@ const formatTime = (date) => {
   return `${hours}:${minutes}`;
 };
 
-export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, formatDate, formatTextDate, formatTime};
+const render = (container, template, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(template);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(template);
+      break;
+  }
+};
+
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, formatDate, formatTextDate, formatTime, render, RenderPosition, createElement};

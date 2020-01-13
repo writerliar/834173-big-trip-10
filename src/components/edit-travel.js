@@ -1,7 +1,7 @@
 import {tripCard} from '../mock/card';
-import {formatDate} from "../utils/utils";
+import {formatDate, createElement} from "../utils/utils";
 
-export const createEditTemplate = () => {
+const createEditTemplate = () => {
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
             <header class="event__header">
@@ -136,4 +136,26 @@ export const createEditTemplate = () => {
             </section>
           </form>`
   );
+};
+
+export default class EditCard {
+  constructor() {
+   this._element = null;
+  }
+
+  getTemplate() {
+    return createEditTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 };
