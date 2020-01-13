@@ -3,7 +3,7 @@ import {createElement} from "../utils/utils";
 const cardsListTemplate = () => {
   return (
     `<ul class="trip-days"></ul>`
-  )
+  );
 };
 
 export default class CardsList {

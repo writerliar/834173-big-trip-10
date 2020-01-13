@@ -19,15 +19,12 @@ const tripControlsContainer = document.querySelector(`.trip-main__trip-controls`
 const tripControlsTitleOfMenu = tripControlsContainer.querySelector(`.trip-main__trip-controls .visually-hidden:first-child`);
 
 render(tripControlsTitleOfMenu, new MenuComponent().getElement(), RenderPosition.AFTERBEGIN);
-// console.log(new MenuComponent().getElement())
 
 render(tripControlsContainer, new FilterComponent().getElement(), RenderPosition.BEFOREEND);
-// console.log(new FilterComponent().getElement())
 
 const tripEvents = document.querySelector(`.trip-events`);
 
 render(tripEvents, new SortComponent().getElement(), RenderPosition.BEFOREEND);
-// console.log(new SortComponent().getElement())
 
 render(tripEvents, new CardsListComponent().getElement(), RenderPosition.BEFOREEND);
 
@@ -45,8 +42,7 @@ const renderCard = (card, index) => {
   });
 
   const cardEdit = cardEditComponent.getElement();
-  cardEdit.addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
+  cardEdit.addEventListener(`submit`, () => {
     tripList.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
   });
 

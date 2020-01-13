@@ -39,4 +39,4 @@ export default class Extra {
   removeElement() {
     this._element = null;
   }
-};
+}

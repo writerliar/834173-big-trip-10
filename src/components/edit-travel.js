@@ -140,7 +140,7 @@ const createEditTemplate = () => {
 
 export default class EditCard {
   constructor() {
-   this._element = null;
+    this._element = null;
   }
 
   getTemplate() {
@@ -158,4 +158,4 @@ export default class EditCard {
   removeElement() {
     this._element = null;
   }
-};
+}
