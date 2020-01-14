@@ -1,11 +1,11 @@
 import MenuComponent from './components/menu';
-import FilterComponent from './components/filter'
-import SortComponent from './components/sort'
-import CardComponent from './components/card-travel'
-import EditCardComponent from './components/edit-travel'
-import InformComponent from './components/information'
-import CardsListComponent from './components/list'
-import {tripCards, getTotalPrice} from './mock/card'
+import FilterComponent from './components/filter';
+import SortComponent from './components/sort';
+import CardComponent from './components/card-travel';
+import EditCardComponent from './components/edit-travel';
+import InformComponent from './components/information';
+import CardsListComponent from './components/list';
+import {tripCards, getTotalPrice} from './mock/card';
 import {render, RenderPosition} from './utils/utils';
 
 
@@ -49,8 +49,8 @@ const renderCard = (card, index) => {
 };
 
 tripCards.slice().sort(
-  function(a, b){
-    return a.startDate-b.startDate
+  function(a, b) {
+    return a.startDate - b.startDate
   }
 ).forEach((card, index) => {
   renderCard(card, index);

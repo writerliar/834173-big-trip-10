@@ -1,9 +1,11 @@
 import {MONTH_SHORT_NAMES} from '../consts';
 
-const DAYS_IN_WEEK = 7;
-const HOURS_IN_DAY = 24;
-const SEC_IN_MIN = 3600;
-const MS_IN_SEC = 1000;
+const TimesValues = {
+  DAYS_IN_WEEK: 7,
+  HOURS_IN_DAY: 24,
+  SEC_IN_MIN: 3600,
+  MS_IN_SEC: 1000
+};
 
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -24,7 +26,7 @@ const getRandomBoolean = () => {
 };
 
 const getRandomDate = () => {
-  return Date.now() + 1 + Math.floor(Math.random() * (DAYS_IN_WEEK * HOURS_IN_DAY * SEC_IN_MIN * MS_IN_SEC));
+  return Date.now() + 1 + Math.floor(Math.random() * (TimesValues.DAYS_IN_WEEK * TimesValues.HOURS_IN_DAY * TimesValues.SEC_IN_MIN * TimesValues.MS_IN_SEC));
 };
 
 const formatDate = (date) => {
