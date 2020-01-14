@@ -64,11 +64,8 @@ if (tripCards.length === 0) {
 
   const tripList = tripEvents.querySelector(`.trip-days`);
 
-  tripCards.slice().sort(
-    function(a, b) {
-      return a.startDate - b.startDate
-    }
-  ).forEach((card, index) => {
+  tripCards.slice().sort((a, b) => a.startDate - b.startDate)
+    .forEach((card, index) => {
     renderCard(tripList, card, index);
   });
 }
