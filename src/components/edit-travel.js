@@ -1,7 +1,32 @@
-import {tripCard} from '../mock/card.js';
-import {formatDate} from "../utils/utils";
+import {tripCard, extraOffers, MAX_EXTRA, getRandomNumber} from '../mock/card';
+import {formatDate, createElement} from "../utils/utils";
 
-export const createEditTemplate = () => {
+const testChecked = (value) => {
+  return value ? `checked` : ``;
+};
+
+const createExtraTemplate = (offers) => {
+  return offers
+      .map((offer) => {
+        return (
+          `<div class="event__offer-selector">
+                      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.type}-1" type="checkbox" name="event-offer-${offer.type}" ${testChecked(offer.isChecked)}>
+                      <label class="event__offer-label" for="event-offer-${offer.type}-1">
+                        <span class="event__offer-title">${offer.title}</span>
+                        &plus;
+                        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+                      </label>
+                    </div>`
+        );
+      })
+      .slice(0, getRandomNumber(0, MAX_EXTRA))
+      .join(``);
+};
+
+const createEditTemplate = () => {
+
+  const extraOffersList = createExtraTemplate(extraOffers);
+
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
             <header class="event__header">
@@ -115,7 +140,7 @@ export const createEditTemplate = () => {
                 <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                 <div class="event__available-offers">
-                  
+                ${extraOffersList}
                 </div>
               </section>
 
@@ -137,3 +162,25 @@ export const createEditTemplate = () => {
           </form>`
   );
 };
+
+export default class EditCard {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
