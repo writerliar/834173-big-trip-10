@@ -68,6 +68,9 @@ const render = (container, template, place) => {
     case RenderPosition.BEFOREEND:
       container.append(template);
       break;
+    default:
+      container.append(template);
+      break;
   }
 };
 
