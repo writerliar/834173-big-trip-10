@@ -60,6 +60,9 @@ const render = (container, template, place) => {
     case RenderPosition.AFTERBEGIN:
       container.prepend(template);
       break;
+    case RenderPosition.AFTEREND:
+      container.after(template);
+      break;
     case RenderPosition.BEFOREEND:
       container.append(template);
       break;
