@@ -1,4 +1,4 @@
-import {tripCard, extraOffers, MAX_EXTRA, getRandomNumber} from '../mock/card';
+import {tripCard, extraOffers, MaxValues, getRandomNumber} from '../mock/card';
 import {formatDate, createElement} from "../utils/utils";
 
 const testChecked = (value) => {
@@ -19,7 +19,7 @@ const createExtraTemplate = (offers) => {
                     </div>`
         );
       })
-      .slice(0, getRandomNumber(0, MAX_EXTRA))
+      .slice(0, getRandomNumber(0, MaxValues.MAX_EXTRA))
       .join(``);
 };
 
