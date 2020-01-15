@@ -5,7 +5,6 @@ const MaxValues = {
   MAX_PICTURE: 5,
   MAX_EXTRA: 2,
   TRIP_COUNT: 3,
-  // TRIP_COUNT: 0,
 };
 
 const Types = [
