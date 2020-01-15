@@ -6,39 +6,7 @@ import InformComponent from "../components/information";
 import SortComponent from "../components/sort";
 import CardsListComponent from "../components/list";
 import {render, RenderPosition} from '../utils/utils';
-
-const renderCard = (tripList, card, index) => {
-  const onEscapePress = (evt) => {
-    const isEscapeKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscapeKey) {
-      replaceEditToCard();
-      document.removeEventListener(`keydown`, onEscapePress);
-    }
-  };
-
-  const cardComponent = new CardComponent(card, index);
-  const replaceCardToEdit = () => {
-    tripList.replaceChild(cardEditComponent.getElement(), cardComponent.getElement());
-  };
-
-  const cardEditComponent = new EditCardComponent();
-  const replaceEditToCard = () => {
-    tripList.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
-  };
-
-  cardComponent.setEditButtonClickHandler(() => {
-    replaceCardToEdit();
-    document.addEventListener(`keydown`, onEscapePress);
-  });
-
-  cardEditComponent.setFormSubmitHandler(() => {
-    replaceEditToCard();
-    document.removeEventListener(`keydown`, onEscapePress);
-  });
-
-  render(tripList, cardComponent.getElement(), RenderPosition.BEFOREEND);
-};
+import {isEscapePress} from '../utils/is-escape-press';
 
 export default class TripController {
   constructor(container) {
@@ -51,6 +19,37 @@ export default class TripController {
 
   render(cards) {
     const container = this._container;
+
+    const renderCard = (tripList, card, index) => {
+      const onEscapePress = () => {
+        if (isEscapePress) {
+          replaceEditToCard();
+          document.removeEventListener(`keydown`, onEscapePress);
+        }
+      };
+
+      const cardComponent = new CardComponent(card, index);
+      const replaceCardToEdit = () => {
+        tripList.replaceChild(cardEditComponent.getElement(), cardComponent.getElement());
+      };
+
+      const cardEditComponent = new EditCardComponent();
+      const replaceEditToCard = () => {
+        tripList.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
+      };
+
+      cardComponent.setEditButtonClickHandler(() => {
+        replaceCardToEdit();
+        document.addEventListener(`keydown`, onEscapePress);
+      });
+
+      cardEditComponent.setFormSubmitHandler(() => {
+        replaceEditToCard();
+        document.removeEventListener(`keydown`, onEscapePress);
+      });
+
+      render(tripList, cardComponent.getElement(), RenderPosition.BEFOREEND);
+    };
 
     if (tripCards.length === 0) {
       render(container, this._EmptyList.getElement(), RenderPosition.BEFOREEND);
