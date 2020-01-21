@@ -1,5 +1,3 @@
-import {MONTH_SHORT_NAMES} from '../consts';
-
 const TimesValues = {
   DAYS_IN_WEEK: 7,
   HOURS_IN_DAY: 24,
@@ -29,34 +27,6 @@ const getRandomDate = () => {
   return Date.now() + 1 + Math.floor(Math.random() * (TimesValues.DAYS_IN_WEEK * TimesValues.HOURS_IN_DAY * TimesValues.SEC_IN_MIN * TimesValues.MS_IN_SEC));
 };
 
-const formatDate = (date) => {
-  const formattingDate = new Date(date);
-
-  const day = formattingDate.getDate();
-  const month = formattingDate.getMonth();
-  const year = formattingDate.getFullYear();
-
-  return `${day}/${month + 1}/${year}`;
-};
-
-const formatTextDate = (date) => {
-  const textdate = new Date(date);
-
-  const day = textdate.getDate();
-  const month = textdate.getMonth();
-
-  return `${MONTH_SHORT_NAMES[month]} ${day}`;
-};
-
-const formatTime = (date) => {
-  const formattingTime = new Date(date);
-
-  const hours = formattingTime.getHours();
-  const minutes = formattingTime.getMinutes();
-
-  return `${hours}:${minutes}`;
-};
-
 const render = (container, template, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -81,4 +51,21 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
-export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, formatDate, formatTextDate, formatTime, render, RenderPosition, createElement};
+const replace = (newComponent, oldComponent) => {
+  const parentElement = oldComponent.getElement().parentElement;
+  const newElement = newComponent.getElement();
+  const oldElement = oldComponent.getElement();
+
+  const isExistElements = !!(parentElement && newElement && oldElement);
+
+  if (isExistElements && parentElement.contains(oldElement)) {
+    parentElement.replaceChild(newElement, oldElement);
+  }
+};
+
+const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};
+
+export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, render, RenderPosition, createElement, replace, remove};

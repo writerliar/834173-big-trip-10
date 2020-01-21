@@ -11,3 +11,9 @@ const ESCAPE_KEYS = [
 export const isEscapePress = (evt) => {
   return ESCAPE_KEYS.indexOf(evt.key) > -1;
 };
+
+// export const isEscapeEvent = (evt, action) => {
+//   if (isEscapePress(evt)) {
+//     action();
+//   }
+// };

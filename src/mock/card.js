@@ -102,7 +102,8 @@ const generateTravelCard = () => {
     startTime: Math.min(firstValue, secondValue),
     endTime: Math.max(firstValue, secondValue),
     price: getRandomNumber(0, MaxValues.MAX_PRICE),
-    extra: extraOffers
+    extra: extraOffers,
+    isFavorite: getRandomBoolean(),
   };
 };
 
