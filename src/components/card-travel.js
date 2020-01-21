@@ -2,6 +2,7 @@ import {formatTime, formatTextDate} from '../utils/utils';
 import AbstractComponent from './abstract';
 
 const createCardTemplate = (card, index) => {
+
   return (
     `<li class="trip-days__item  day">
          <div class="day__info">
