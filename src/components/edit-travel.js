@@ -189,18 +189,23 @@ export default class EditCard extends AbstractSmartComponent {
     super();
 
     this._card = card;
+    this._type = card.type;
     this._formSubmitHandler = null;
     this._flatpickr = null;
 
     this._applyFlatpickr();
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createEditTemplate(this._card);
+    return createEditTemplate(this._card, {
+      type: this._type,
+    });
   }
 
   recoveryListeners() {
     this.setFormSubmitHandler(this._formSubmitHandler);
+    this._subscribeOnEvents();
   }
 
   rerender() {
@@ -210,6 +215,9 @@ export default class EditCard extends AbstractSmartComponent {
   }
 
   reset() {
+    const card = this._card;
+
+    this._type = card.type;
     this.rerender();
   }
 
@@ -254,6 +262,21 @@ export default class EditCard extends AbstractSmartComponent {
       dataFormat: `d/m/Y H:i`,
       altFormat: `d/m/Y H:i`,
       defaultDate: this._card.endDate,
+    });
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+      const typeInput = evt.path.find((it) => {
+        return (it.classList) ? it.classList.contains(`event__type-input`) : false;
+      });
+
+      if (typeInput) {
+        this._type = typeInput.value;
+        this.rerender();
+      }
     });
   }
 }
