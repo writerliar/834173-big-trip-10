@@ -1,7 +1,9 @@
-import {formatTime, formatTextDate} from '../utils/utils';
+import {formatTime, formatTextDate, getDuration} from '../utils/data-time';
 import AbstractComponent from './abstract';
 
 const createCardTemplate = (card, index) => {
+
+  const duration = getDuration(card.startDate, card.endDate);
 
   return (
     `<li class="trip-days__item  day">
@@ -22,7 +24,7 @@ const createCardTemplate = (card, index) => {
                         &mdash;
                         <time class="event__end-time" datetime="2019-03-18T11:00">${formatTime(card.endTime)}</time>
                       </p>
-                      <p class="event__duration">1H 30M</p>
+                      <p class="event__duration">${duration}</p>
                     </div>
                     <p class="event__price">
                       &euro;&nbsp;<span class="event__price-value">${card.price}</span>

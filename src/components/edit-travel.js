@@ -1,5 +1,8 @@
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 import {extraOffers, MaxValues, getRandomNumber} from '../mock/card';
-import {formatDate} from "../utils/utils";
+import {formatDate} from "../utils/data-time";
 import AbstractSmartComponent from "./abstract-smart";
 
 const testChecked = (value) => {
@@ -187,6 +190,9 @@ export default class EditCard extends AbstractSmartComponent {
 
     this._card = card;
     this._formSubmitHandler = null;
+    this._flatpickr = null;
+
+    this._applyFlatpickr();
   }
 
   getTemplate() {
@@ -199,6 +205,8 @@ export default class EditCard extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+
+    this._applyFlatpickr();
   }
 
   reset() {
@@ -220,5 +228,32 @@ export default class EditCard extends AbstractSmartComponent {
   setFormSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
     this._formSubmitHandler = handler;
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    const startDate = this.getElement().querySelector(`#event-start-time-1`);
+    flatpickr(startDate, {
+      allowInput: true,
+      altInput: true,
+      enableTime: true,
+      dataFormat: `d/m/Y H:i`,
+      altFormat: `d/m/Y H:i`,
+      defaultDate: this._card.startDate,
+    });
+
+    const endDate = this.getElement().querySelector(`#event-end-time-1`);
+    flatpickr(endDate, {
+      allowInput: true,
+      altInput: true,
+      enableTime: true,
+      dataFormat: `d/m/Y H:i`,
+      altFormat: `d/m/Y H:i`,
+      defaultDate: this._card.endDate,
+    });
   }
 }

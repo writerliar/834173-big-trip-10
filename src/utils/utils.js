@@ -1,5 +1,3 @@
-import {MONTH_SHORT_NAMES} from '../consts';
-
 const TimesValues = {
   DAYS_IN_WEEK: 7,
   HOURS_IN_DAY: 24,
@@ -27,34 +25,6 @@ const getRandomBoolean = () => {
 
 const getRandomDate = () => {
   return Date.now() + 1 + Math.floor(Math.random() * (TimesValues.DAYS_IN_WEEK * TimesValues.HOURS_IN_DAY * TimesValues.SEC_IN_MIN * TimesValues.MS_IN_SEC));
-};
-
-const formatDate = (date) => {
-  const formattingDate = new Date(date);
-
-  const day = formattingDate.getDate();
-  const month = formattingDate.getMonth();
-  const year = formattingDate.getFullYear();
-
-  return `${day}/${month + 1}/${year}`;
-};
-
-const formatTextDate = (date) => {
-  const textdate = new Date(date);
-
-  const day = textdate.getDate();
-  const month = textdate.getMonth();
-
-  return `${MONTH_SHORT_NAMES[month]} ${day}`;
-};
-
-const formatTime = (date) => {
-  const formattingTime = new Date(date);
-
-  const hours = formattingTime.getHours();
-  const minutes = formattingTime.getMinutes();
-
-  return `${hours}:${minutes}`;
 };
 
 const render = (container, template, place) => {
@@ -98,4 +68,4 @@ const remove = (component) => {
   component.removeElement();
 };
 
-export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, formatDate, formatTextDate, formatTime, render, RenderPosition, createElement, replace, remove};
+export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, render, RenderPosition, createElement, replace, remove};
