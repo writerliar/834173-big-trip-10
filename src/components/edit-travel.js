@@ -173,10 +173,15 @@ const createEditTemplate = (card) => {
 };
 
 const parseFormData = (formData) => {
+  const StartTime = formData.get(`event-start-time`);
+  const EndTime = formData.get(`event-end-time`);
+
   return {
     type: formData.get(`event-type`),
     city: formData.get(`event-destination`),
     price: formData.get(`event-price`),
+    startDate: StartTime ? new Date(StartTime) : null,
+    endDate: EndTime ? new Date(EndTime) : null,
     isFavorite: formData.get(`event-favorite`),
   };
 };
@@ -189,16 +194,27 @@ export default class EditCard extends AbstractSmartComponent {
     this._index = index;
     this._formSubmitHandler = null;
     this._flatpickr = null;
+    this._deleteButtonClickHandler = null;
 
     this._applyFlatpickr();
   }
 
   getTemplate() {
-    return createEditTemplate(this._card);
+    return createEditTemplate(this._card, this._index);
+  }
+
+  removeElement() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    super.removeElement();
   }
 
   recoveryListeners() {
     this.setFormSubmitHandler(this._formSubmitHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
   }
 
   rerender() {
@@ -225,6 +241,13 @@ export default class EditCard extends AbstractSmartComponent {
   setFormSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
     this._formSubmitHandler = handler;
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {

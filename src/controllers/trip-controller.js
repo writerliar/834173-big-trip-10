@@ -3,14 +3,14 @@ import EmptyList from "../components/no-cards";
 import InformComponent from "../components/information";
 import SortComponent, {SortType} from "../components/sort";
 import CardsListComponent from "../components/list";
-// import {getCardsByFilter} from '../utils/filter';
-import {render, remove, RenderPosition} from '../utils/utils';
-import PointControllerComponent from "./point-controller";
+import {render, RenderPosition} from '../utils/utils';
+import {MaxValues} from '../mock/card';
+import PointControllerComponent, {Mode as CardControllerMode, EmptyCard} from "./point-controller";
 
 const renderCards = (tripList, cards, onDataChange, onViewChange) => {
   return cards.map((card, index) => {
     const cardController = new PointControllerComponent(tripList, onDataChange, onViewChange);
-    cardController.render(card, index);
+    cardController.render(card, index, CardControllerMode.DEFAULT);
 
     return cardController;
   });
@@ -33,9 +33,21 @@ export default class TripController {
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
 
+    this._creatingCard = null;
+
     this._SortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
 
     this._cardsModel.setFilterChangeHandler(this._onFilterChange);
+  }
+
+  createCard() {
+    if (this._creatingCard) {
+      return;
+    }
+
+    const cardsListElement = this._CardsListComponent.getElement();
+    this._creatingCard = new PointControllerComponent(cardsListElement, this._onDataChange, this._onViewChange);
+    this._creatingCard.render(EmptyCard, CardControllerMode.ADDING);
   }
 
   render() {
@@ -60,16 +72,52 @@ export default class TripController {
     this._tripControllers = this._tripControllers.concat(newCards);
   }
 
-  _onDataChange(pointController, oldData, newData) {
-    const isSuccess = this._cardsModel.updateCard(oldData.id, newData);
+  _removeCards() {
+    this._tripControllers.forEach((cardController) => cardController.destroy());
+    this._tripControllers = [];
+  }
 
-    if (isSuccess) {
-      pointController.render(newData);
+  _updateCards(count) {
+    this._removeCards();
+    this._updateCardsList(this._cardsModel.getCards().slice(0, count));
+  }
+
+  _onDataChange(pointController, oldData, newData) {
+    if (oldData === EmptyCard) {
+      this._creatingCard = null;
+
+      if (newData === null) {
+        PointControllerComponent.destroy();
+        this._updateCards(MaxValues.TRIP_COUNT);
+      } else {
+        this._cardsModel.addCards(newData);
+        pointController.render(newData, CardControllerMode.DEFAULT);
+
+        this._tripControllers = [].concat(PointControllerComponent, this._tripControllers);
+        this._showingCardsCount = this._tripControllers.length;
+      }
+    } else if (newData === null) {
+      this._cardsModel.removeCard(oldData.id);
+      this._updateCards(this._showingCardsCount);
+    } else {
+      const isSuccess = this._cardsModel.updateCard(oldData.id, newData);
+
+      if (isSuccess) {
+        pointController.render(newData, CardControllerMode.DEFAULT);
+      }
     }
   }
 
   _onViewChange() {
     this._tripControllers.forEach((it) => it.setDefaultView());
+  }
+
+  _updateCardsList(newCards) {
+    const tripList = this._CardsListComponent.getElement();
+
+    tripList.innerHTML = ``;
+
+    this._tripControllers = renderCards(tripList, newCards, this._onDataChange, this._onViewChange);
   }
 
   _onSortTypeChange(sortType) {
@@ -89,19 +137,11 @@ export default class TripController {
         break;
     }
 
-    const tripList = this._CardsListComponent.getElement();
-
-    tripList.innerHTML = ``;
-
-    this._tripControllers = renderCards(tripList, sortedCards, this._onDataChange, this._onViewChange);
+    this._updateCardsList(sortedCards);
   }
 
   _onFilterChange() {
 
-    const tripList = this._CardsListComponent.getElement();
-
-    tripList.innerHTML = ``;
-
-    this._tripControllers = renderCards(tripList, this._cardsModel.getCards(), this._onDataChange, this._onViewChange);
+    this._updateCardsList(this._cardsModel.getCards());
   }
 }

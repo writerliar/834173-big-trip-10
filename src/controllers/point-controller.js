@@ -1,16 +1,7 @@
 import CardComponent from '../components/card-travel';
 import EditCardComponent from '../components/edit-travel';
-import {
-  render,
-  RenderPosition,
-  replace,
-  remove,
-  getRandomElement,
-  getRandomNumber,
-  getRandomBoolean
-} from '../utils/utils';
+import {render, RenderPosition, replace, remove,} from '../utils/utils';
 import {isEscapePress} from '../utils/is-escape-press';
-import {extraOffers, fillPhotos, MaxValues} from "../mock/card";
 
 export const Mode = {
   ADDING: `adding`,
@@ -20,14 +11,14 @@ export const Mode = {
 
 export const EmptyCard = {
   type: null,
-  city: null,
-  img: null,
+  city: ``,
+  img: [],
   description: ``,
-  startDate: null,
-  endDate: null,
-  startTime: null,
-  endTime: null,
-  price: null,
+  startDate: `01/01/2019`,
+  endDate: `02/01/2019`,
+  startTime: `00:00`,
+  endTime: `00:00`,
+  price: ``,
   extra: null,
   isFavorite: false,
 };
@@ -63,7 +54,7 @@ export default class PointController {
       evt.preventDefault();
       const data = this._EditCardComponent.getData();
       this._onDataChange(this, card, Object.assign(card, data));
-      // this._replaceEditToCard();
+      this._replaceEditToCard();
     });
 
     this._EditCardComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, card, null));

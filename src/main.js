@@ -17,9 +17,13 @@ const tripController = new TripControllerComponent(tripEvents, cardsModel);
 const filterController = new FilterController(tripControlsContainer, cardsModel);
 filterController.render();
 
+document.querySelector(`.trip-main__event-add-btn`)
+  .addEventListener(`click`, () => {
+    tripController.createCard();
+  });
+
 render(tripControlsTitleOfMenu, new MenuComponent().getElement(), RenderPosition.AFTEREND);
 
 tripController.render();
 
 totalPriceContainer.textContent = getTotalPrice().toString();
-
