@@ -1,6 +1,6 @@
 import CardComponent from '../components/card-travel';
 import EditCardComponent from '../components/edit-travel';
-import {render, RenderPosition, replace, remove,} from '../utils/utils';
+import {render, RenderPosition, replace, remove} from '../utils/utils';
 import {isEscapePress} from '../utils/is-escape-press';
 
 export const Mode = {
