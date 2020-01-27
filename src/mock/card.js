@@ -93,6 +93,7 @@ const generateTravelCard = () => {
   let secondValue = getRandomDate();
 
   return {
+    id: String(new Date() + Math.random()),
     type: getRandomElement(Types),
     city: getRandomElement(Cities),
     img: fillPhotos(MaxValues.MAX_PICTURE),

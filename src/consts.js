@@ -12,3 +12,9 @@ export const MONTH_SHORT_NAMES = [
   `Nov`,
   `Dec`
 ];
+
+export const FILTER_TYPE = {
+  ALL: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
+};

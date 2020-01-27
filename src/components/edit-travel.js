@@ -2,12 +2,9 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 import {extraOffers, MaxValues, getRandomNumber} from '../mock/card';
+import {testChecked} from '../utils/utils';
 import {formatDate} from "../utils/data-time";
 import AbstractSmartComponent from "./abstract-smart";
-
-const testChecked = (value) => {
-  return value ? `checked` : ``;
-};
 
 const createExtraTemplate = (offers) => {
   return offers
@@ -136,7 +133,7 @@ const createEditTemplate = (card) => {
               </div>
 
               <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-              <button class="event__reset-btn" type="reset">Cancel</button>
+              <button class="event__reset-btn" type="reset">Delete</button>
               
               <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
                       <label class="event__favorite-btn" for="event-favorite-1">
@@ -185,27 +182,23 @@ const parseFormData = (formData) => {
 };
 
 export default class EditCard extends AbstractSmartComponent {
-  constructor(card) {
+  constructor(card, index) {
     super();
 
     this._card = card;
-    this._type = card.type;
+    this._index = index;
     this._formSubmitHandler = null;
     this._flatpickr = null;
 
     this._applyFlatpickr();
-    this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createEditTemplate(this._card, {
-      type: this._type,
-    });
+    return createEditTemplate(this._card);
   }
 
   recoveryListeners() {
     this.setFormSubmitHandler(this._formSubmitHandler);
-    this._subscribeOnEvents();
   }
 
   rerender() {
@@ -215,9 +208,6 @@ export default class EditCard extends AbstractSmartComponent {
   }
 
   reset() {
-    const card = this._card;
-
-    this._type = card.type;
     this.rerender();
   }
 
@@ -225,8 +215,7 @@ export default class EditCard extends AbstractSmartComponent {
     const form = this.getElement();
     const formData = new FormData(form);
 
-    parseFormData(formData);
-    // console.log(parseFormData(formData))
+    return parseFormData(formData);
   }
 
   setFavoriteButtonClickHandler(handler) {
@@ -262,21 +251,6 @@ export default class EditCard extends AbstractSmartComponent {
       dataFormat: `d/m/Y H:i`,
       altFormat: `d/m/Y H:i`,
       defaultDate: this._card.endDate,
-    });
-  }
-
-  _subscribeOnEvents() {
-    const element = this.getElement();
-
-    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
-      const typeInput = evt.path.find((it) => {
-        return (it.classList) ? it.classList.contains(`event__type-input`) : false;
-      });
-
-      if (typeInput) {
-        this._type = typeInput.value;
-        this.rerender();
-      }
     });
   }
 }

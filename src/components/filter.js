@@ -1,10 +1,17 @@
 import AbstractComponent from './abstract';
 
+const FILTER_ID_PREFIX = `filter_`;
+
+const getFilterNameById = (id) => {
+  return id.substring(FILTER_ID_PREFIX.length);
+};
+
 const createFilterTemplate = () => {
+
   return (
     `<form class="trip-filters" action="#" method="get">
               <div class="trip-filters__filter">
-                <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
+                <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="" checked>
                 <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
               </div>
 
@@ -24,7 +31,20 @@ const createFilterTemplate = () => {
 };
 
 export default class Filter extends AbstractComponent {
+  constructor(filters) {
+    super();
+
+    this._filters = filters;
+  }
+
   getTemplate() {
-    return createFilterTemplate();
+    return createFilterTemplate(this._filters);
+  }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`change`, (evt) => {
+      const filterName = getFilterNameById(evt.target.id);
+      return handler(filterName);
+    });
   }
 }

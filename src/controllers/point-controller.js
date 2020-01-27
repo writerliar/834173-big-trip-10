@@ -1,11 +1,35 @@
 import CardComponent from '../components/card-travel';
 import EditCardComponent from '../components/edit-travel';
-import {render, RenderPosition, replace} from '../utils/utils';
+import {
+  render,
+  RenderPosition,
+  replace,
+  remove,
+  getRandomElement,
+  getRandomNumber,
+  getRandomBoolean
+} from '../utils/utils';
 import {isEscapePress} from '../utils/is-escape-press';
+import {extraOffers, fillPhotos, MaxValues} from "../mock/card";
 
-const Mode = {
+export const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`
+};
+
+export const EmptyCard = {
+  type: null,
+  city: null,
+  img: null,
+  description: ``,
+  startDate: null,
+  endDate: null,
+  startTime: null,
+  endTime: null,
+  price: null,
+  extra: null,
+  isFavorite: false,
 };
 
 export default class PointController {
@@ -23,12 +47,12 @@ export default class PointController {
     this._replaceEditToCard.bind(this);
   }
 
-  render(card, index) {
+  render(card, index, mode) {
     const oldCardComponent = this._CardComponent;
     const oldEditCardComponent = this._EditCardComponent;
 
     this._CardComponent = new CardComponent(card, index);
-    this._EditCardComponent = new EditCardComponent(card);
+    this._EditCardComponent = new EditCardComponent(card, index);
 
     this._CardComponent.setEditButtonClickHandler(() => {
       this._replaceCardToEdit();
@@ -38,9 +62,31 @@ export default class PointController {
     this._EditCardComponent.setFormSubmitHandler((evt) => {
       evt.preventDefault();
       const data = this._EditCardComponent.getData();
-      this._onDataChange(this, card, Object.assign({}, card, data));
-      this._replaceEditToCard();
+      this._onDataChange(this, card, Object.assign(card, data));
+      // this._replaceEditToCard();
     });
+
+    this._EditCardComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, card, null));
+
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldEditCardComponent && oldCardComponent) {
+          replace(this._CardComponent, oldCardComponent);
+          replace(this._EditCardComponent, oldEditCardComponent);
+          this._replaceEditToCard();
+        } else {
+          render(this._container, this._CardComponent, RenderPosition.BEFOREEND);
+        }
+        break;
+      case Mode.ADDING:
+        if (oldEditCardComponent && oldCardComponent) {
+          remove(oldCardComponent);
+          remove(oldEditCardComponent);
+        }
+        document.addEventListener(`keydown`, this._onEscapePress);
+        render(this._container, this._EditCardComponent, RenderPosition.AFTERBEGIN);
+        break;
+    }
 
     this._EditCardComponent.setFavoriteButtonClickHandler(() => {
       this._onDataChange(this, card, Object.assign({}, card, {
@@ -54,6 +100,12 @@ export default class PointController {
     } else {
       render(this._container, this._CardComponent.getElement(), RenderPosition.BEFOREEND);
     }
+  }
+
+  destroy() {
+    remove(this._EditCardComponent);
+    remove(this._CardComponent);
+    document.removeEventListener(`keydown`, this._onEscapePress);
   }
 
   setDefaultView() {
@@ -78,6 +130,10 @@ export default class PointController {
 
   _onEscapePress(evt) {
     if (isEscapePress(evt)) {
+      if (this._mode === Mode.ADDING) {
+        this._onDataChange(this, EmptyCard, null);
+      }
+
       this._replaceEditToCard();
       document.removeEventListener(`keydown`, this._onEscapePress);
     }

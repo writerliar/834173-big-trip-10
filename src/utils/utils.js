@@ -68,4 +68,8 @@ const remove = (component) => {
   component.removeElement();
 };
 
-export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, render, RenderPosition, createElement, replace, remove};
+const testChecked = (value) => {
+  return value ? `checked` : ``;
+};
+
+export {getRandomElement, getRandomNumber, getRandomBoolean, getRandomDate, render, RenderPosition, createElement, replace, remove, testChecked};
